@@ -355,9 +355,24 @@
 
 .order-filters {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: var(--spacing-md);
   align-items: center;
+}
+
+.order-filters #order-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+.order-filters #print-orders-btn {
+  margin-left: auto;
+  white-space: nowrap;
 }
 
 .order-filters input,
@@ -409,6 +424,50 @@
     background 0.15s,
     box-shadow 0.15s;
   margin-left: auto;
+}
+
+#user-orders-modal .admin-table thead th {
+  text-align: center;
+}
+
+#user-orders-modal .admin-table tbody th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#order-detail-modal .admin-table thead th {
+  text-align: center;
+}
+
+#order-detail-modal .admin-table tbody th {
+  text-align: center;
+  vertical-align: middle;
+}
+#users-render .admin-table thead th {
+  text-align: center;
+}
+
+#users-render .admin-table tbody th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#products-create-render .admin-table thead th {
+  text-align: center;
+}
+
+#products-create-render .admin-table tbody th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#orders-render .admin-table thead th {
+  text-align: center;
+}
+
+#orders-render .admin-table tbody th {
+  text-align: center;
+  vertical-align: middle;
 }
 
 .order-filters #print-orders-btn:hover {
