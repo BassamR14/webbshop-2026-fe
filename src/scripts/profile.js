@@ -19,6 +19,7 @@ import {
   addToCart,
   updateCartBadge,
 } from "../utils/utility.js";
+import { goToProduct } from "./product-detail.js";
 
 updateCartBadge();
 
@@ -394,8 +395,9 @@ function createWishlistCard(product, variant) {
     statusElement.className = "btn btn--primary";
     statusElement.textContent = "Buy Now";
 
-    statusElement.addEventListener("click", () => {
-      const result = addToCart(product.id, variant.id, variant.size);
+    statusElement.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const result = addToCart(product._id, variant._id, variant.size);
 
       if (result.success) {
         statusElement.textContent = "Added to Cart";
@@ -431,7 +433,8 @@ function createWishlistCard(product, variant) {
   removeBtn.title = "Remove from wishlist";
 
   //remove from wishlist
-  removeBtn.addEventListener("click", async () => {
+  removeBtn.addEventListener("click", async (event) => {
+    event.stopPropagation();
     const token = localStorage.getItem("token");
     const result = await removeFromWishlist(token, product._id, variant._id);
 
@@ -444,6 +447,8 @@ function createWishlistCard(product, variant) {
   wishlistCard.appendChild(info);
   wishlistCard.appendChild(statusColumn);
   wishlistCard.appendChild(removeBtn);
+
+  wishlistCard.addEventListener("click", () => goToProduct(product._id));
 
   return wishlistCard;
 }
