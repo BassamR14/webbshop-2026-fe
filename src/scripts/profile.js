@@ -395,7 +395,7 @@ function createWishlistCard(product, variant) {
     statusElement.textContent = "Buy Now";
 
     statusElement.addEventListener("click", () => {
-      const result = addToCart(product.id, variant.id, variant.size);
+      const result = addToCart(product._id, variant._id, variant.size);
 
       if (result.success) {
         statusElement.textContent = "Added to Cart";
