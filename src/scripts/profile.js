@@ -84,6 +84,7 @@ function renderMyOrders(orders) {
 function createOrderCard(order) {
   const orderCard = document.createElement("div");
   orderCard.className = "order-card";
+  orderCard.style.cursor = "pointer";
 
   const header = document.createElement("div");
   header.className = "order-card__header";
@@ -96,15 +97,10 @@ function createOrderCard(order) {
   status.className = "order-card__status";
   status.textContent = order.status;
 
-  if (order.status === "pending") {
-    status.classList.add("order-card__status--pending");
-  } else if (order.status === "confirmed") {
-    status.classList.add("order-card__status--confirmed");
-  } else if (order.status === "shipped") {
-    status.classList.add("order-card__status--shipped");
-  } else if (order.status === "cancelled") {
-    status.classList.add("order-card__status--cancelled");
-  }
+  if (order.status === "pending") status.classList.add("order-card__status--pending");
+  else if (order.status === "confirmed") status.classList.add("order-card__status--confirmed");
+  else if (order.status === "shipped") status.classList.add("order-card__status--shipped");
+  else if (order.status === "cancelled") status.classList.add("order-card__status--cancelled");
 
   const total = document.createElement("span");
   total.className = "order-card__total";
@@ -136,14 +132,116 @@ function createOrderCard(order) {
     item.appendChild(nameSpan);
     item.appendChild(sizeSpan);
     item.appendChild(priceSpan);
-
     productList.appendChild(item);
   });
 
   orderCard.appendChild(header);
   orderCard.appendChild(productList);
 
+  // Click to open modal
+  orderCard.addEventListener("click", () => openOrderModal(order));
+
   return orderCard;
+}
+
+function openOrderModal(order) {
+  const background = document.createElement("div");
+  background.classList.add("profile-modal-bg");
+
+  const modal = document.createElement("div");
+  modal.classList.add("profile-modal");
+
+  // Header
+  const header = document.createElement("div");
+  header.classList.add("profile-modal__header");
+
+  const title = document.createElement("p");
+  title.classList.add("profile-modal__label");
+  title.innerText = "Order Confirmed";
+
+  const orderId = document.createElement("p");
+  orderId.classList.add("profile-modal__id");
+  orderId.innerText = `#${order._id}`;
+
+  const date = document.createElement("p");
+  date.classList.add("profile-modal__date");
+  date.innerText = formatDateISO(order.createdAt);
+
+  const closeBtn = document.createElement("button");
+  closeBtn.classList.add("profile-modal__close");
+  closeBtn.innerText = "✕";
+  closeBtn.title = "Close";
+  closeBtn.addEventListener("click", () => background.remove());
+
+  header.append(title, orderId, date, closeBtn);
+
+  // Address
+  const addressSection = document.createElement("div");
+  addressSection.classList.add("profile-modal__section");
+
+  const addressLabel = document.createElement("p");
+  addressLabel.classList.add("profile-modal__section-label");
+  addressLabel.innerText = "Shipping to";
+
+  const addr = order.user?.address;
+  const addressValue = document.createElement("p");
+  addressValue.classList.add("profile-modal__section-value");
+  addressValue.innerText = addr
+    ? `${addr.street}, ${addr.city}, ${addr.postalCode}, ${addr.country}`
+    : "No address on file";
+
+  addressSection.append(addressLabel, addressValue);
+
+  // Products
+  const productsSection = document.createElement("div");
+  productsSection.classList.add("profile-modal__section");
+
+  const productsLabel = document.createElement("p");
+  productsLabel.classList.add("profile-modal__section-label");
+  productsLabel.innerText = "Items";
+
+  productsSection.append(productsLabel);
+
+  order.products.forEach((product) => {
+    const row = document.createElement("div");
+    row.classList.add("profile-modal__product");
+
+    const name = document.createElement("span");
+    name.classList.add("profile-modal__product-name");
+    name.innerText = product.name;
+
+    const size = document.createElement("span");
+    size.classList.add("profile-modal__product-size");
+    size.innerText = `Size ${product.size}`;
+
+    const price = document.createElement("span");
+    price.classList.add("profile-modal__product-price");
+    price.innerText = `$${product.price.toFixed(2)}`;
+
+    row.append(name, size, price);
+    productsSection.append(row);
+  });
+
+  // Total
+  const totalSection = document.createElement("div");
+  totalSection.classList.add("profile-modal__total");
+
+  const totalLabel = document.createElement("span");
+  totalLabel.innerText = "Total";
+
+  const totalAmount = document.createElement("span");
+  totalAmount.classList.add("profile-modal__total-amount");
+  totalAmount.innerText = `$${order.totalCost.toFixed(2)}`;
+
+  totalSection.append(totalLabel, totalAmount);
+
+  modal.append(header, addressSection, productsSection, totalSection);
+  background.append(modal);
+  document.body.append(background);
+
+  background.addEventListener("click", (e) => {
+    if (e.target === background) background.remove();
+  });
 }
 
 async function editProfile() {
