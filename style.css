@@ -11,10 +11,11 @@
 
   --font-primary: "Inter", sans-serif;
 
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 32px;
-  --spacing-xl: 64px;
+  --spacing-sm: clamp(6px, 1vw, 8px);
+  --spacing-md: clamp(12px, 2vw, 16px);
+  --spacing-lg: clamp(24px, 4vw, 32px);
+  --spacing-xl: clamp(40px, 6vw, 64px);
+
 }
 
 * {
@@ -69,6 +70,11 @@ nav {
   text-transform: uppercase;
   font-size: 1rem;
   font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: var(--color-accent-secondary);
+  text-decoration: underline;
 }
 
 .nav-links a.active {
@@ -170,4 +176,75 @@ nav {
   align-items: center;
   justify-content: center;
   line-height: 22px;
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  margin-left: 0;
+}
+
+/* ── MOBILE RESPONSIVE ── */
+@media (max-width: 768px) {
+  .site-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  nav {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .logo {
+    font-size: 1.4rem;
+  }
+
+  .nav-links {
+    gap: var(--spacing-sm);
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+
+  .nav-links a {
+    font-size: 0.75rem;
+  }
+
+  #nav-logout {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    gap: 6px;
+  }
+
+  .nav-links a {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .logo {
+    font-size: 1.1rem;
+  }
+
+  .nav-links {
+    gap: 4px;
+  }
+
+  .nav-links a {
+    font-size: 0.6rem;
+  }
+
+  #nav-logout {
+    font-size: 0.6rem;
+    padding: 3px 8px;
+  }
+
+  .cart-badge {
+    font-size: 0.65rem;
+    min-width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
 }
