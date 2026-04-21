@@ -267,18 +267,97 @@ h1 {
     cursor: pointer;
 }
 
-/* RESPONSIVE */
+/* ── RESPONSIVE ── */
 @media (max-width: 768px) {
     .auth-section {
         grid-template-columns: 1fr;
     }
+
     .auth-left {
         border-right: none;
         border-bottom: 5px solid var(--color-text-dark);
         padding: 2rem;
-        min-height: 40vh;
+        min-height: auto;
+        position: static;
+        height: auto;
     }
-    .auth-brand h1 { font-size: 3rem; }
-    .auth-right { padding: 2rem; }
-    .auth-form-header h2 { font-size: 2rem; }
+
+    .auth-shoe-image {
+        width: 50%;
+        max-width: 200px;
+        margin-bottom: 1.5rem;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    .auth-right {
+        padding: 2rem;
+    }
+
+    .auth-form-header h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-left {
+        padding: 1.5rem;
+        min-height: auto;
+    }
+
+    .auth-shoe-image {
+        width: 45%;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+    }
+
+    .auth-right {
+        padding: 1.5rem;
+    }
+
+    .auth-form-header h2 {
+        font-size: 1.75rem;
+    }
+
+    .auth-right .btn {
+        font-size: 0.75rem;
+        padding: 0.75rem 1rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .auth-left {
+        padding: 1.25rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .auth-shoe-image {
+        width: 40%;
+    }
+
+    .auth-right {
+        padding: 1.25rem;
+    }
+
+    .auth-form-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"] {
+        font-size: 0.85rem;
+    }
+
+    .pw-requirements li {
+        font-size: 0.65rem;
+    }
 }

@@ -694,3 +694,160 @@
     color: var(--color-accent);
     font-style: italic;
 }
+
+.profile-name {
+    font-size: clamp(1.8rem, 5vw, 4rem);
+}
+
+@media (max-width: 768px) {
+    .profile-name {
+        font-size: 2.8rem;
+    }
+
+    #profile-info-section .profile-field {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .order-card__header {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        align-items: flex-start;
+    }
+
+    .order-card__total {
+        text-align: left;
+    }
+
+    .order-card__product {
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+    }
+
+    .wishlist-card {
+        grid-template-columns: 120px 1fr;
+    }
+
+    .wishlist-card__status-column {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-main {
+        padding: var(--spacing-md);
+    }
+
+    .profile-name {
+        font-size: 2.2rem;
+    }
+
+    .profile-hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .profile-hero-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .order-card__product {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .order-card__product-price {
+        text-align: left;
+    }
+
+    .wishlist-card {
+        grid-template-columns: 1fr;
+        padding: var(--spacing-md);
+    }
+
+    .wishlist-card__image {
+        width: 100%;
+        height: 200px;
+        border-right: none;
+        border-bottom: 3px solid var(--color-primary);
+    }
+
+    .wishlist-card__meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .wishlist-card__status-column {
+        justify-content: stretch;
+    }
+
+    .wishlist-card__status-column .btn {
+        width: 100%;
+    }
+
+    .profile-edit-form__actions {
+        flex-direction: column;
+    }
+
+    .profile-edit-form__actions .btn {
+        width: 100%;
+    }
+}
+
+
+
+@media (max-width: 375px) {
+    .profile-name {
+        font-size: 1.8rem;
+    }
+
+    .profile-section-title {
+        font-size: 1rem;
+        letter-spacing: 2px;
+    }
+
+    .order-card__date {
+        font-size: 0.85rem;
+    }
+
+    .order-card__status {
+        font-size: 0.65rem;
+        padding: 4px 10px;
+        min-width: unset;
+    }
+
+    .wishlist-card__name {
+        font-size: 1rem;
+    }
+
+    .wishlist-card__meta label {
+        font-size: 0.75rem;
+    }
+
+    .wishlist-card__meta .value {
+        font-size: 0.9rem;
+    }
+
+    .profile-modal {
+        width: 95%;
+    }
+
+    .profile-modal__header {
+        padding: 1rem;
+    }
+
+    .profile-modal__section {
+        padding: 1rem;
+    }
+
+    .profile-modal__total {
+        padding: 1rem;
+    }
+
+    .profile-modal__total-amount {
+        font-size: 1.4rem;
+    }
+}
