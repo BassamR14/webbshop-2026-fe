@@ -17,6 +17,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     min-height: calc(100vh - 80px);
+    align-items: start;
 }
 
 /* ── LEFT PANEL ── */
@@ -26,9 +27,15 @@
     padding: 3rem 2.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: flex-start;
     position: relative;
     overflow: hidden;
+    min-height: calc(100vh - 80px);
+}
+
+.auth-brand {
+    margin-top: 0;
 }
 
 .auth-shoe-image {
