@@ -134,6 +134,16 @@ export function updateNavbar() {
     if (loginLink) {
       loginLink.textContent = "Profile";
       loginLink.href = "profile.html";
+      
+      // Set active class based on current page
+      const currentPage = window.location.pathname;
+      const navLinks = document.querySelectorAll(".nav-links a");
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+        if (link.href.includes(currentPage.split("/").pop())) {
+          link.classList.add("active");
+        }
+});
     }
     if (adminLi) adminLi.style.display = "none";
     if (logoutLi) logoutLi.style.display = "list-item";
