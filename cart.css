@@ -19,7 +19,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -27,7 +27,7 @@
   text-decoration: none;
   margin-bottom: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: none;
   transition: color 0.15s;
 }
 
@@ -360,8 +360,9 @@
 /* User address display */
 .user-address {
   margin-bottom: 1rem;
-  font-size: 0.8rem;
+  font-size: 1.15rem;
   color: rgba(0,0,0,0.6);
+  line-height: 1.6;
 }
 
 /* Address form margin */
@@ -556,6 +557,58 @@
   background: var(--color-accent);
   color: var(--color-text-dark);
   border-color: var(--color-accent);
+}
+
+/* ── Font size boost ── */
+.left-panel,
+.right-panel {
+  font-size: 2rem;
+}
+
+.form-group label {
+  font-size: 1rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+  font-size: 1rem;
+}
+
+.section-heading h2 {
+  font-size: 0.85rem;
+}
+
+.product-name {
+  font-size: 0.95rem;
+}
+
+.product-size {
+  font-size: 0.85rem;
+}
+
+.product-price {
+  font-size: 1.1rem;
+}
+
+.summary-row {
+  font-size: 0.9rem;
+}
+
+.summary-total span:first-child {
+  font-size: 0.8rem;
+}
+
+.no-func {
+  font-size: 0.85rem;
+}
+
+.payment-tabs .tab {
+  font-size: 0.85rem;
+}
+
+.confirm-btn {
+  font-size: 0.9rem;
 }
 
 /* ── RESPONSIVE ── */

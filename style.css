@@ -159,6 +159,7 @@ nav {
   position: relative;
   display: inline-flex;
   align-items: center;
+  margin-right: 14px;
 }
 
 .cart-badge {
@@ -166,20 +167,20 @@ nav {
   background-color: var(--color-accent);
   color: var(--color-text-dark);
   font-family: var(--font-primary);
-  font-size: 1rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 7px;
-  /* border: 1px solid var(--color-text-dark); */
-  margin-left: 5px;
+  min-width: 18px;
+  height: 18px;
+  width: 18px;
+  padding: 0;
   align-items: center;
   justify-content: center;
-  line-height: 22px;
+  line-height: 18px;
+  text-align: center;
   position: absolute;
-  top: -6px;
-  right: -10px;
-  margin-left: 0;
+  top: -8px;
+  right: -18px;
+  border-radius: 50%;
 }
 
 /* ── MOBILE RESPONSIVE ── */
