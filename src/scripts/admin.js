@@ -24,29 +24,24 @@ updateCartBadge();
 //Guard against manually going to admin page by a user
 function checkIfAdmin() {
   const token = localStorage.getItem("token");
+  const decodedToken = token ? decodeToken(token) : null;
 
-  if (!token) {
+  if (!token || !decodedToken || decodedToken.isAdmin === false) {
+    document.body.innerHTML = "";
+    document.body.style.visibility = "visible";
+
     const msg = document.createElement("h1");
+    msg.style.textAlign = "center";
     const img = document.createElement("img");
     msg.innerText = "You Can't be here! Begone!";
     img.src = "lotr.gif";
     document.body.append(msg, img);
+
     return false;
   }
 
-  const decodedToken = decodeToken(token);
-
-  if (!decodedToken || decodedToken.isAdmin === false) {
-    const msg = document.createElement("h1");
-    const img = document.createElement("img");
-
-    msg.innerText = "You Can't be here! Begone!";
-    img.src = "lotr.gif";
-
-    document.body.append(msg, img);
-    return false;
-  }
-
+  // Admin confirmed — reveal the page
+  document.body.style.visibility = "visible";
   return true;
 }
 
