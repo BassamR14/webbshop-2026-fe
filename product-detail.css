@@ -73,8 +73,8 @@
     height: auto;
     display: block;
     aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border: 2px solid var(--color-primary);
+    object-fit: contain;
+    background: #fff;
 }
 
 /* STATUS BADGE */
