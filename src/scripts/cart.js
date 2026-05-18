@@ -3,6 +3,7 @@ import { getCurrentUser } from "../utils/auth.js";
 import { checkIfUserHasAddress, updateCartBadge } from "../utils/utility.js";
 
 updateCartBadge();
+let isEditingAddress = false;
 
 //Function render cart products in the cart page
 async function renderCart() {
@@ -110,10 +111,46 @@ async function renderCart() {
   }
 }
 
+async function setupAddressEdit() {
+  const fullUser = await getMe();
+  if (!fullUser) return;
+  if (!fullUser.address) return;
+
+  const userAddress = document.querySelector(".user-address");
+  const addressForm = document.querySelector(".address-form");
+
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "Edit address";
+  editBtn.className = "btn btn--outline";
+  editBtn.style.marginTop = "12px";
+  userAddress.append(editBtn);
+
+  editBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    isEditingAddress = true;
+    document.querySelector(".fullname-input").value = fullUser.name;
+    document.querySelector(".street-input").value = fullUser.address.street;
+    document.querySelector(".city-input").value = fullUser.address.city;
+    document.querySelector(".postal-code-input").value = fullUser.address.postalCode;
+    document.querySelector(".country-input").value = fullUser.address.country;
+
+    userAddress.style.display = "none";
+    addressForm.style.display = "block";
+
+    const saveCheckbox = document.getElementById("save-address-checkbox");
+    const saveLabel = saveCheckbox?.closest("label");
+    if (saveLabel) saveLabel.lastChild.textContent = " Update address in profile";
+    saveCheckbox.checked = true;
+  });
+}
+
 // Only call on cart.html
 if (window.location.pathname.includes("cart.html")) {
   renderCart();
-  checkIfUserHasAddress("address-form", "user-address");
+  (async () => {
+    await checkIfUserHasAddress("address-form", "user-address");
+  setupAddressEdit();
+  }) ();
 }
 
 //To validate address inputs
@@ -181,7 +218,7 @@ async function createOrder() {
     //Get address that is saved for user or from inputs
     let address = null;
 
-    if (fullUser.address) {
+    if (fullUser.address && !isEditingAddress) {
       const { _id, __v, ...cleanAddress } = fullUser.address;
       address = {
         name: fullUser.name,
@@ -199,7 +236,7 @@ async function createOrder() {
       const saveCheckbox = document.getElementById("save-address-checkbox");
       if (saveCheckbox && saveCheckbox.checked) {
         await updateUser({
-          name: fullUser.name,
+          name: document.querySelector(".fullname-input").value,
           email: fullUser.email,
           address: {
             street: address.street,
