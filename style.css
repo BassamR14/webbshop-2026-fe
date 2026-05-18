@@ -15,7 +15,6 @@
   --spacing-md: clamp(12px, 2vw, 16px);
   --spacing-lg: clamp(24px, 4vw, 32px);
   --spacing-xl: clamp(40px, 6vw, 64px);
-
 }
 
 * {
@@ -34,7 +33,7 @@ body {
 }
 
 main {
-    flex: 1;
+  flex: 1;
 }
 
 .site-header {
@@ -159,7 +158,6 @@ nav {
   position: relative;
   display: inline-flex;
   align-items: center;
-  margin-right: 14px;
 }
 
 .cart-badge {
