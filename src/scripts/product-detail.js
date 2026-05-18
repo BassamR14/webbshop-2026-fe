@@ -76,7 +76,7 @@ export async function renderProductDetail() {
         productIsLive
       );
     }
-    
+
     variants.sort((a, b) => Number(a.size) - Number(b.size));
 
     //Create a button for each size
@@ -84,6 +84,11 @@ export async function renderProductDetail() {
       const button = document.createElement("button");
       button.innerText = v.size;
       if (v.stock === 0) {
+        button.disabled = true;
+      }
+
+      //Check product status
+      if (product.status === "sold_out") {
         button.disabled = true;
       }
 
