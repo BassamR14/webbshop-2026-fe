@@ -78,7 +78,10 @@ nav {
 }
 
 .nav-links a.active {
-  border-bottom: 5px solid var(--color-accent-secondary);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent-secondary);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
 }
 
 /* logout button in navbar */
