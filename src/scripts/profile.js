@@ -70,6 +70,7 @@ async function loadProfile() {
 
 function renderMyOrders(orders) {
   const orderHistory = document.getElementById("order-history-list");
+  orderHistory.innerHTML = '';
 
   if (orders.length === 0) {
     orderHistory.textContent = "You have no orders yet";
@@ -411,6 +412,7 @@ function checkEditPasswordRules() {
 
 function renderWishlist(wishlistItems) {
   const wishlistContainer = document.getElementById("wishlist-list");
+  wishlistContainer.innerHTML = '';
 
   if (wishlistItems.length === 0) {
     wishlistContainer.textContent = `Your wishlist is empty`;
