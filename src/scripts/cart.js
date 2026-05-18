@@ -1,4 +1,4 @@
-import { getProducts, getVariants, postOrder, getMe } from "../utils/api.js";
+import { getProducts, getVariants, postOrder, getMe, updateUser } from "../utils/api.js";
 import { getCurrentUser } from "../utils/auth.js";
 import { checkIfUserHasAddress, updateCartBadge } from "../utils/utility.js";
 
@@ -195,6 +195,20 @@ async function createOrder() {
         postalCode: document.querySelector(".postal-code-input").value,
         country: document.querySelector(".country-input").value,
       };
+
+      const saveCheckbox = document.getElementById("save-address-checkbox");
+      if (saveCheckbox && saveCheckbox.checked) {
+        await updateUser({
+          name: fullUser.name,
+          email: fullUser.email,
+          address: {
+            street: address.street,
+            city: address.city,
+            postalCode: address.postalCode,
+            country: address.country,
+          },
+        });
+      }
     }
 
     const order = {
