@@ -54,6 +54,7 @@ nav {
 
 .nav-links {
   display: flex;
+  align-items: center;
   list-style: none;
   margin-left: auto;
   gap: var(--spacing-md);
