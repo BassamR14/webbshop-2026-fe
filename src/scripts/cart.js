@@ -268,7 +268,7 @@ function summaryModal(order) {
 
   const printBtn = document.createElement("button");
   printBtn.classList.add("order-modal__print");
-  printBtn.innerText = "⎙";
+  printBtn.innerText = "Print";
   printBtn.title = "Print Receipt";
   printBtn.addEventListener("click", () => window.print());
 
