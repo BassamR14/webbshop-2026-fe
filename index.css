@@ -29,6 +29,19 @@
   gap: var(--spacing-xl);
 }
 
+.hero-product--empty {
+  justify-content: center;
+}
+
+.hero-product--empty .hero-product-info {
+  text-align: center;
+  align-items: center; 
+}
+
+.hero-product--empty .hero-product-info .btn {
+  align-self: center; 
+}
+
 /* Product image */
 #hero-product-image {
   flex: 0 0 45%;
