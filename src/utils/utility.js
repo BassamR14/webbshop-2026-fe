@@ -192,10 +192,11 @@ export async function updateCartBadge() {
     return;
   }
 
+  const user = getCurrentUser();        
+  if (!user) return;
+
   let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  const user = await getMe();
-  cart = cart.filter((i) => i.userId === user._id);
-  const count = cart.length;
+  const count = cart.filter((i) => i.userId === user.userId).length; 
 
   if (count > 0) {
     badge.textContent = count;

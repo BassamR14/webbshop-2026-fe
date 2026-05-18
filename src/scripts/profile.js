@@ -500,6 +500,7 @@ function createWishlistCard(product, variant) {
       const result = addToCart(product._id, variant._id, variant.size);
 
       if (result.success) {
+        updateCartBadge();
         statusElement.textContent = "Added to Cart";
         statusElement.disabled = true;
         statusElement.classList.add("btn--added");
