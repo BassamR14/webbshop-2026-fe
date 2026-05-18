@@ -276,6 +276,9 @@ async function editProfile() {
       editSection.classList.add("hidden");
       infoSection.classList.remove("hidden");
       btnEdit.textContent = "Edit Profile";
+
+      document.getElementById("edit-password").value = "";
+      document.getElementById("confirm-password").value = "";
     }
   });
 
@@ -283,6 +286,9 @@ async function editProfile() {
     editSection.classList.add("hidden");
     infoSection.classList.remove("hidden");
     btnEdit.textContent = "Edit Profile";
+
+    document.getElementById("edit-password").value = "";
+    document.getElementById("confirm-password").value = "";
   });
 
   btnSave.addEventListener("click", async (event) => {
@@ -392,6 +398,12 @@ async function editProfile() {
   toggleEditPw.addEventListener("click", () =>
     togglePassword("edit-password", toggleEditPw),
   );
+
+  const toggleConfirmPw = document.getElementById("toggle-confirm-password");
+  toggleConfirmPw.addEventListener("click", () =>
+    togglePassword("confirm-password", toggleConfirmPw)
+  );
+
 }
 
 function checkEditPasswordRules() {

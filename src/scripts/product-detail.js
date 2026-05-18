@@ -59,6 +59,10 @@ export async function renderProductDetail() {
 
     const addToWishlistBtn = document.querySelector(".add-to-wishlist");
 
+    if (product.status === "sold_out") {
+      addToWishlistBtn.disabled = true;
+    }
+
     // Helper to update Add to Cart button state
     function updateAddToCartState() {
       const activeSizeSelected = !!document.querySelector(
@@ -230,6 +234,10 @@ export async function renderProductDetail() {
         : "Add to Wishlist";
 
       addToWishlistBtn.classList.toggle("active", isWishlisted);
+
+      if (product.status === "sold_out") {
+        addToWishlistBtn.disabled = true;
+      }
     }
   } catch (error) {
     console.error(error);

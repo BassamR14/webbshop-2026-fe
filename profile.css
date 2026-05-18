@@ -217,7 +217,8 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
-    color: var(--color-text-dark);
+    font-family: var(--font-primary);
+    color: var(--color-text-grey);
     padding: 4px 8px;
 }
 
