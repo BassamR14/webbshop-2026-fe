@@ -1,4 +1,10 @@
-import { getProducts, getVariants, postOrder, getMe, updateUser } from "../utils/api.js";
+import {
+  getProducts,
+  getVariants,
+  postOrder,
+  getMe,
+  updateUser,
+} from "../utils/api.js";
 import { getCurrentUser } from "../utils/auth.js";
 import { checkIfUserHasAddress, updateCartBadge } from "../utils/utility.js";
 
@@ -131,7 +137,8 @@ async function setupAddressEdit() {
     document.querySelector(".fullname-input").value = fullUser.name;
     document.querySelector(".street-input").value = fullUser.address.street;
     document.querySelector(".city-input").value = fullUser.address.city;
-    document.querySelector(".postal-code-input").value = fullUser.address.postalCode;
+    document.querySelector(".postal-code-input").value =
+      fullUser.address.postalCode;
     document.querySelector(".country-input").value = fullUser.address.country;
 
     userAddress.style.display = "none";
@@ -139,7 +146,8 @@ async function setupAddressEdit() {
 
     const saveCheckbox = document.getElementById("save-address-checkbox");
     const saveLabel = saveCheckbox?.closest("label");
-    if (saveLabel) saveLabel.lastChild.textContent = " Update address in profile";
+    if (saveLabel)
+      saveLabel.lastChild.textContent = " Update address in profile";
     saveCheckbox.checked = true;
   });
 }
@@ -148,9 +156,10 @@ async function setupAddressEdit() {
 if (window.location.pathname.includes("cart.html")) {
   renderCart();
   (async () => {
-    await checkIfUserHasAddress("address-form", "user-address");
-  setupAddressEdit();
-  }) ();
+    const user = await getMe();
+    await checkIfUserHasAddress("address-form", "user-address", user);
+    setupAddressEdit();
+  })();
 }
 
 //To validate address inputs
