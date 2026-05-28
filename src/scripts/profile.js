@@ -46,7 +46,13 @@ async function loadProfile(fullUser) {
   const user = getCurrentUser();
   if (!user) return;
 
-  const myOrders = await getMyOrders(user.id);
+  //fire all api calls at the same time instead of waiting for each one to finish
+  const [myOrders, allProducts, allVariants] = await Promise.all([
+    getMyOrders(),
+    getProducts(),
+    getVariants(),
+  ]);
+
   renderMyOrders(myOrders);
 
   checkIfUserHasAddress("add-address", "profile-address", fullUser);
@@ -56,8 +62,6 @@ async function loadProfile(fullUser) {
   document.querySelector(".profile-email").textContent = fullUser.email;
   document.querySelector(".profile-password").textContent = `************`;
 
-  const allProducts = await getProducts();
-  const allVariants = await getVariants();
   const userWishlist = fullUser.wishlist || [];
 
   const wishlistItems = userWishlist.map((item) => {

@@ -12,7 +12,7 @@ updateCartBadge();
 let isEditingAddress = false;
 
 //Function render cart products in the cart page
-async function renderCart() {
+async function renderCart(products, variants) {
   let subtotal = 0;
   const cartContainer = document.querySelector(".cart-container");
 
@@ -24,8 +24,6 @@ async function renderCart() {
     const cart = (JSON.parse(localStorage.getItem("cart")) || []).filter(
       (item) => item.userId === user.userId,
     );
-    const products = await getProducts();
-    const variants = await getVariants();
 
     if (cart.length > 0) {
       cart.forEach((item) => {
@@ -117,8 +115,7 @@ async function renderCart() {
   }
 }
 
-async function setupAddressEdit() {
-  const fullUser = await getMe();
+async function setupAddressEdit(fullUser) {
   if (!fullUser) return;
   if (!fullUser.address) return;
 
@@ -154,11 +151,18 @@ async function setupAddressEdit() {
 
 // Only call on cart.html
 if (window.location.pathname.includes("cart.html")) {
-  renderCart();
   (async () => {
-    const user = await getMe();
+    // fetch everything in parallel
+    const [user, products, variants] = await Promise.all([
+      getMe(),
+      getProducts(),
+      getVariants(),
+    ]);
+
+    renderCart(products, variants);
+
     await checkIfUserHasAddress("address-form", "user-address", user);
-    setupAddressEdit();
+    setupAddressEdit(user);
   })();
 }
 
