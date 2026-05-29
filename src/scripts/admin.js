@@ -51,10 +51,13 @@ let editingProductId = null;
 
 //Function that fetches all data, instead of having to fetch data in each render function
 async function fetchData() {
-  const products = await getProducts();
-  const variants = await getVariants();
-  const users = await getUsers();
-  const orders = await getOrders();
+  //All api functions fire at the same time instead of waiting for the previous one to finish.
+  const [products, variants, users, orders] = await Promise.all([
+    getProducts(),
+    getVariants(),
+    getUsers(),
+    getOrders(),
+  ]);
 
   return { products, variants, users, orders };
 }

@@ -123,8 +123,12 @@ export function addToCart(productId, variantId, size) {
 //Function that renders the address if a user has one
 //renderElement is the class name of the element where you want to display address
 //elementToHide is the element you hide (that has address inputs or a button like "Add Address")
-export async function checkIfUserHasAddress(elementToHide, renderElement) {
-  const user = await getMe();
+export async function checkIfUserHasAddress(
+  elementToHide,
+  renderElement,
+  user,
+) {
+  // const user = await getMe();
   const element = document.querySelector(`.${elementToHide}`);
 
   if (user?.address) {
@@ -192,11 +196,11 @@ export async function updateCartBadge() {
     return;
   }
 
-  const user = getCurrentUser();        
+  const user = getCurrentUser();
   if (!user) return;
 
   let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  const count = cart.filter((i) => i.userId === user.userId).length; 
+  const count = cart.filter((i) => i.userId === user.userId).length;
 
   if (count > 0) {
     badge.textContent = count;
