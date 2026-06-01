@@ -59,6 +59,10 @@ export async function renderProductDetail() {
 
     const addToWishlistBtn = document.querySelector(".add-to-wishlist");
 
+    if (product.status === "sold_out") {
+      addToWishlistBtn.disabled = true;
+    }
+
     // Helper to update Add to Cart button state
     function updateAddToCartState() {
       const activeSizeSelected = !!document.querySelector(
@@ -76,7 +80,7 @@ export async function renderProductDetail() {
         productIsLive
       );
     }
-    
+
     variants.sort((a, b) => Number(a.size) - Number(b.size));
 
     //Create a button for each size
@@ -84,6 +88,11 @@ export async function renderProductDetail() {
       const button = document.createElement("button");
       button.innerText = v.size;
       if (v.stock === 0) {
+        button.disabled = true;
+      }
+
+      //Check product status
+      if (product.status === "sold_out") {
         button.disabled = true;
       }
 
@@ -225,6 +234,10 @@ export async function renderProductDetail() {
         : "Add to Wishlist";
 
       addToWishlistBtn.classList.toggle("active", isWishlisted);
+
+      if (product.status === "sold_out") {
+        addToWishlistBtn.disabled = true;
+      }
     }
   } catch (error) {
     console.error(error);

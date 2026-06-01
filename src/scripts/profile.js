@@ -23,15 +23,17 @@ import { goToProduct } from "./product-detail.js";
 
 updateCartBadge();
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // guard — if user is not logged in, redirect to login page
   if (!isLoggedIn()) {
     window.location.href = "auth.html";
     return;
   }
 
-  loadProfile();
-  editProfile();
+  const fullUser = await getMe();
+
+  loadProfile(fullUser);
+  editProfile(fullUser);
 
   // logout button
   const logoutBtn = document.getElementById("logout-btn");
@@ -40,23 +42,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-async function loadProfile() {
+async function loadProfile(fullUser) {
   const user = getCurrentUser();
-  const fullUser = await getMe();
   if (!user) return;
 
-  const myOrders = await getMyOrders(user.id);
+  //fire all api calls at the same time instead of waiting for each one to finish
+  const [myOrders, allProducts, allVariants] = await Promise.all([
+    getMyOrders(),
+    getProducts(),
+    getVariants(),
+  ]);
+
   renderMyOrders(myOrders);
 
-  checkIfUserHasAddress("add-address", "profile-address");
+  checkIfUserHasAddress("add-address", "profile-address", fullUser);
 
   // show user info on the profile page
   document.querySelector(".profile-name").textContent = fullUser.name;
   document.querySelector(".profile-email").textContent = fullUser.email;
   document.querySelector(".profile-password").textContent = `************`;
 
-  const allProducts = await getProducts();
-  const allVariants = await getVariants();
   const userWishlist = fullUser.wishlist || [];
 
   const wishlistItems = userWishlist.map((item) => {
@@ -70,6 +75,7 @@ async function loadProfile() {
 
 function renderMyOrders(orders) {
   const orderHistory = document.getElementById("order-history-list");
+  orderHistory.innerHTML = "";
 
   if (orders.length === 0) {
     orderHistory.textContent = "You have no orders yet";
@@ -97,10 +103,14 @@ function createOrderCard(order) {
   status.className = "order-card__status";
   status.textContent = order.status;
 
-  if (order.status === "pending") status.classList.add("order-card__status--pending");
-  else if (order.status === "confirmed") status.classList.add("order-card__status--confirmed");
-  else if (order.status === "shipped") status.classList.add("order-card__status--shipped");
-  else if (order.status === "cancelled") status.classList.add("order-card__status--cancelled");
+  if (order.status === "pending")
+    status.classList.add("order-card__status--pending");
+  else if (order.status === "confirmed")
+    status.classList.add("order-card__status--confirmed");
+  else if (order.status === "shipped")
+    status.classList.add("order-card__status--shipped");
+  else if (order.status === "cancelled")
+    status.classList.add("order-card__status--cancelled");
 
   const total = document.createElement("span");
   total.className = "order-card__total";
@@ -244,15 +254,13 @@ function openOrderModal(order) {
   });
 }
 
-async function editProfile() {
+async function editProfile(fullUser) {
   const editSection = document.getElementById("profile-edit-section");
   const infoSection = document.getElementById("profile-info-section");
 
   const btnEdit = document.getElementById("edit-profile-btn");
   const btnCancel = document.getElementById("cancel-edit-btn");
   const btnSave = document.getElementById("save-profile-btn");
-
-  const fullUser = await getMe();
 
   btnEdit.addEventListener("click", () => {
     if (editSection.classList.contains("hidden")) {
@@ -275,6 +283,9 @@ async function editProfile() {
       editSection.classList.add("hidden");
       infoSection.classList.remove("hidden");
       btnEdit.textContent = "Edit Profile";
+
+      document.getElementById("edit-password").value = "";
+      document.getElementById("confirm-password").value = "";
     }
   });
 
@@ -282,6 +293,9 @@ async function editProfile() {
     editSection.classList.add("hidden");
     infoSection.classList.remove("hidden");
     btnEdit.textContent = "Edit Profile";
+
+    document.getElementById("edit-password").value = "";
+    document.getElementById("confirm-password").value = "";
   });
 
   btnSave.addEventListener("click", async (event) => {
@@ -365,7 +379,8 @@ async function editProfile() {
       // Live Server reloads the page when db.json changes.
       // This won't be an issue with the real API.
       saveSuccess.textContent = `Save successful`;
-      await loadProfile();
+      const updatedUser = await getMe();
+      await loadProfile(updatedUser);
       editSection.classList.add("hidden");
       infoSection.classList.remove("hidden");
       btnEdit.textContent = "Edit Profile";
@@ -391,6 +406,11 @@ async function editProfile() {
   toggleEditPw.addEventListener("click", () =>
     togglePassword("edit-password", toggleEditPw),
   );
+
+  const toggleConfirmPw = document.getElementById("toggle-confirm-password");
+  toggleConfirmPw.addEventListener("click", () =>
+    togglePassword("confirm-password", toggleConfirmPw),
+  );
 }
 
 function checkEditPasswordRules() {
@@ -411,6 +431,7 @@ function checkEditPasswordRules() {
 
 function renderWishlist(wishlistItems) {
   const wishlistContainer = document.getElementById("wishlist-list");
+  wishlistContainer.innerHTML = "";
 
   if (wishlistItems.length === 0) {
     wishlistContainer.textContent = `Your wishlist is empty`;
@@ -498,6 +519,7 @@ function createWishlistCard(product, variant) {
       const result = addToCart(product._id, variant._id, variant.size);
 
       if (result.success) {
+        updateCartBadge();
         statusElement.textContent = "Added to Cart";
         statusElement.disabled = true;
         statusElement.classList.add("btn--added");

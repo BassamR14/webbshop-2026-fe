@@ -34,7 +34,7 @@
       <!-- USER INFO -->
       <section class="profile-hero">
         <div class="profile-hero-info">
-          <h1 id="profile-name" class="profile-name">Name</h1>
+          <h1 id="profile-name" class="profile-name">LOADING</h1>
         </div>
         <div class="profile-hero-actions">
           <button class="btn btn--outline" id="edit-profile-btn">
@@ -142,12 +142,19 @@
               </ul>
 
               <label for="confirm-password">Confirm Password</label>
-              <input
-                type="password"
-                id="confirm-password"
-                class="profile-field__input" />
+              <div class="input-wrap">
+                <input
+                  type="password"
+                  id="confirm-password"
+                  class="profile-field__input" />
+                <button
+                  type="button"
+                  class="toggle-pw"
+                  id="toggle-confirm-password">
+                  Show
+                </button>
+              </div>
               <p class="profile-field__error password-error"></p>
-            </div>
 
             <div class="profile-edit-form__actions">
               <button

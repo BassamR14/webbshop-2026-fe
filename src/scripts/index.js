@@ -110,6 +110,7 @@ async function loadProducts() {
     const heroImage = document.getElementById("hero-product-image");
     const heroName = document.getElementById("hero-product-name");
     const heroTimer = document.getElementById("hero-product-timer");
+    const heroBtn = document.getElementById("hero-btn");
 
     //Search product catalogue
     const searchInput = document.querySelector("#product-search");
@@ -231,10 +232,18 @@ async function loadProducts() {
     );
 
     if (nextDrop && heroImage) {
+      heroImage.style.display = "block";
+      document.querySelector(".hero-product").classList.remove("hero-product--empty");
       renderHero(nextDrop);
     } else if (heroImage) {
+      heroImage.style.display = "none";
+      document.querySelector(".hero-product").classList.add("hero-product--empty");
       heroName.textContent = "No upcoming drops";
       heroTimer.textContent = "Check back soon!";
+      heroBtn.textContent = "Shop Latest Drop"; 
+      heroBtn.addEventListener("click", () => {
+        window.location.href = "products.html";
+      });
     }
 
     //Start SSE after first render
@@ -335,12 +344,14 @@ function renderHero(product) {
   const heroProductImage = document.getElementById("hero-product-image");
   const heroProductName = document.getElementById("hero-product-name");
   const heroProductTimer = document.getElementById("hero-product-timer");
-  const heroBtn = document.getElementById("hero-btn");
 
   heroProductImage.src = product.image;
   heroProductName.textContent = product.name;
   //Hero Timer
   countdownTimer(product.dropDate, heroProductTimer);
+
+  heroBtn.textContent = "Shop the Drop"; // reset text in case it was changed to "Shop Latest Drop" when there were no upcoming drops
+  heroBtn.removeAttribute("href");       // remove href in case it was set to "products.html" when there were no upcoming drops
 
   heroBtn.addEventListener("click", () => goToProduct(product._id));
 }

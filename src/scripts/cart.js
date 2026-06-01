@@ -1,11 +1,18 @@
-import { getProducts, getVariants, postOrder, getMe } from "../utils/api.js";
+import {
+  getProducts,
+  getVariants,
+  postOrder,
+  getMe,
+  updateUser,
+} from "../utils/api.js";
 import { getCurrentUser } from "../utils/auth.js";
 import { checkIfUserHasAddress, updateCartBadge } from "../utils/utility.js";
 
 updateCartBadge();
+let isEditingAddress = false;
 
 //Function render cart products in the cart page
-async function renderCart() {
+async function renderCart(products, variants) {
   let subtotal = 0;
   const cartContainer = document.querySelector(".cart-container");
 
@@ -17,8 +24,6 @@ async function renderCart() {
     const cart = (JSON.parse(localStorage.getItem("cart")) || []).filter(
       (item) => item.userId === user.userId,
     );
-    const products = await getProducts();
-    const variants = await getVariants();
 
     if (cart.length > 0) {
       cart.forEach((item) => {
@@ -110,10 +115,55 @@ async function renderCart() {
   }
 }
 
+async function setupAddressEdit(fullUser) {
+  if (!fullUser) return;
+  if (!fullUser.address) return;
+
+  const userAddress = document.querySelector(".user-address");
+  const addressForm = document.querySelector(".address-form");
+
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "Edit address";
+  editBtn.className = "btn btn--outline";
+  editBtn.style.marginTop = "12px";
+  userAddress.append(editBtn);
+
+  editBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    isEditingAddress = true;
+    document.querySelector(".fullname-input").value = fullUser.name;
+    document.querySelector(".street-input").value = fullUser.address.street;
+    document.querySelector(".city-input").value = fullUser.address.city;
+    document.querySelector(".postal-code-input").value =
+      fullUser.address.postalCode;
+    document.querySelector(".country-input").value = fullUser.address.country;
+
+    userAddress.style.display = "none";
+    addressForm.style.display = "block";
+
+    const saveCheckbox = document.getElementById("save-address-checkbox");
+    const saveLabel = saveCheckbox?.closest("label");
+    if (saveLabel)
+      saveLabel.lastChild.textContent = " Update address in profile";
+    saveCheckbox.checked = true;
+  });
+}
+
 // Only call on cart.html
 if (window.location.pathname.includes("cart.html")) {
-  renderCart();
-  checkIfUserHasAddress("address-form", "user-address");
+  (async () => {
+    // fetch everything in parallel
+    const [user, products, variants] = await Promise.all([
+      getMe(),
+      getProducts(),
+      getVariants(),
+    ]);
+
+    renderCart(products, variants);
+
+    await checkIfUserHasAddress("address-form", "user-address", user);
+    setupAddressEdit(user);
+  })();
 }
 
 //To validate address inputs
@@ -181,7 +231,7 @@ async function createOrder() {
     //Get address that is saved for user or from inputs
     let address = null;
 
-    if (fullUser.address) {
+    if (fullUser.address && !isEditingAddress) {
       const { _id, __v, ...cleanAddress } = fullUser.address;
       address = {
         name: fullUser.name,
@@ -195,6 +245,20 @@ async function createOrder() {
         postalCode: document.querySelector(".postal-code-input").value,
         country: document.querySelector(".country-input").value,
       };
+
+      const saveCheckbox = document.getElementById("save-address-checkbox");
+      if (saveCheckbox && saveCheckbox.checked) {
+        await updateUser({
+          name: document.querySelector(".fullname-input").value,
+          email: fullUser.email,
+          address: {
+            street: address.street,
+            city: address.city,
+            postalCode: address.postalCode,
+            country: address.country,
+          },
+        });
+      }
     }
 
     const order = {
@@ -268,7 +332,7 @@ function summaryModal(order) {
 
   const printBtn = document.createElement("button");
   printBtn.classList.add("order-modal__print");
-  printBtn.innerText = "⎙";
+  printBtn.innerText = "Print";
   printBtn.title = "Print Receipt";
   printBtn.addEventListener("click", () => window.print());
 
